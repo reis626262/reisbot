@@ -34,7 +34,7 @@ filtre_kelimeler = [
     'Özel Oranlara', 'ÖZEL ORAN', 'MEGA ORAN'
 ]
 
-client = TelegramClient('baran_session', api_id, api_hash)
+client = TelegramClient('/mnt/volume/baran_session', api_id, api_hash)
 
 @client.on(events.NewMessage(chats=kaynak_gruplar))
 async def mesaj_yakala(event):
@@ -58,4 +58,5 @@ async def main():
     await client.run_until_disconnected()
 
 client.loop.run_until_complete(main())
+
 

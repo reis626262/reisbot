@@ -41,11 +41,21 @@ async def mesaj_yakala(event):
     mesaj = event.message.message
     if any(kelime.lower() in mesaj.lower() for kelime in filtre_kelimeler):
         hedef = await client.get_entity(hedef_grup)
-        await client.send_message(hedef, mesaj)
+
+        if event.message.media:
+            # Medya varsa → dosya ile birlikte gönder
+            await client.send_file(hedef, event.message.media, caption=mesaj)
+        else:
+            # Sadece metin varsa → markdown ile gönder
+            await client.send_message(hedef, mesaj, parse_mode='markdown')
 
 async def main():
-    await client.start(phone_number)
+    await client.connect()
+    if not await client.is_user_authorized():
+        print("Oturum geçersiz, yeniden giriş gerekli.")
+        return
     print("Bot çalışıyor...")
     await client.run_until_disconnected()
 
 client.loop.run_until_complete(main())
+
